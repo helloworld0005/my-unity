@@ -1,0 +1,128 @@
+﻿Practical 2
+Aim
+Implement physical characteristics (translation, rotation & scaling) on a 2D object.
+________________
+
+
+Step-by-Step Documentation
+1. Translation Implementation
+Setting up the Scene:
+* Create a New Scene by going to File > New Scene or pressing Ctrl+N.
+* Select Basic 2D (Built-in) from the templates and click Create.
+* Create an empty game object: GameObject > Create Empty (Ctrl+Shift+N).
+* Add a physics component to the object: Select the GameObject, then go to Component > Physics 2D > Rigidbody 2D.
+* In the Inspector panel for the Rigidbody 2D component, set the Gravity Scale to 0 to prevent the object from falling.
+* Add a visual representation: Right-click the GameObject in the Hierarchy and select 2D Object > Sprites > Square.
+Creating the Translation Script:
+* In the Project panel, right-click and select Create > Scripting > MonoBehaviour Script.
+* Name the script prac2.
+* Double-click the script to open it in your code editor (e.g., VS Code).
+Code for Translation:
+C#
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+
+public class prac2 : MonoBehaviour
+{
+    public float speed = 1f;
+    private Rigidbody2D rb2d;
+
+
+    // Start is called once before the first execution of Update
+    void Start()
+    {
+        // For 2D physics interaction
+        rb2d = GetComponent<Rigidbody2D>();
+    }
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        // Get input from keyboard
+        float moveX = Input.GetAxis("Horizontal");
+        float moveY = Input.GetAxis("Vertical");
+
+
+        // For 2D movement
+        Vector2 movement = new Vector2(moveX, moveY);
+        rb2d.linearVelocity = movement * speed;
+    }
+}
+
+
+Finalizing Translation:
+* Select the GameObject in the Hierarchy.
+* In the Inspector, click Add Component, go to Scripts, and select prac2.
+* Set the Speed value to 10 in the script component.
+* Click the Play button and use the arrow keys to move the square object around the screen.
+Description of Output (Translation): The output shows a Unity editor window with a white square sprite centered in the Game view. In the Inspector, the prac2 script is attached with a Speed property. When the play button is pressed, the square shifts its position vertically and horizontally based on keyboard input.
+________________
+
+
+2. Rotation Implementation
+Code for Rotation:
+Replace the contents of the prac2 script with the following:
+C#
+using UnityEngine;
+
+
+public class prac2 : MonoBehaviour
+{
+    public float rotationSpeed = 100f;
+    private Rigidbody2D rb2d;
+
+
+    void Start()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+    }
+
+
+    void Update()
+    {
+        float rotateInput = Input.GetAxis("Horizontal");
+        rb2d.MoveRotation(rb2d.rotation - rotateInput * rotationSpeed * Time.deltaTime);
+    }
+}
+
+
+Description of Output (Rotation): In the Inspector, the script now displays a Rotation Speed field, set to a high value like 1000000. After running the scene, pressing the A key rotates the square to the left, and pressing the D key rotates it to the right. The visual output shows the square tilted at an angle within the scene.
+________________
+
+
+3. Scaling Implementation
+Code for Scaling:
+Replace the contents of the prac2 script with the following:
+C#
+using UnityEngine;
+
+
+public class prac2 : MonoBehaviour
+{
+    public float scaleSpeed = 1f;
+    public float minScale = 0.2f;
+    public float maxScale = 5f;
+
+
+    void Update()
+    {
+        float scaleInput = Input.GetAxis("Vertical");
+
+
+        // Calculate the new scale factor based on input and speed
+        float newScaleFactor = transform.localScale.x + (scaleInput * scaleSpeed * Time.deltaTime);
+
+
+        // Clamp the new scale factor within the defined min and max limits
+        newScaleFactor = Mathf.Clamp(newScaleFactor, minScale, maxScale);
+
+
+        // Apply the new scale to all axes of the object's transform
+        transform.localScale = new Vector3(newScaleFactor, newScaleFactor, newScaleFactor);
+    }
+}
+
+
+Description of Output (Scaling): The square object increases or decreases in size when the Vertical axis keys (Up/Down arrows or W/S) are pressed. The Inspector shows the Scale values (X, Y, Z) in the Transform component changing dynamically as the object grows or shrinks within the set bounds.

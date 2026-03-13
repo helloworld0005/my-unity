@@ -1,0 +1,184 @@
+﻿Practical 1
+Aim: Installing Unity Hub and executing basic C# script.
+________________
+
+
+Step-by-Step Instructions
+1. Installation and Account Setup
+* Install Unity Hub: Download and install the Unity Hub application on your system.
+* Sign In: Create a Unity account and sign in to the Hub.
+* Install Editor: If prompted, install the recommended version of the Unity Editor (the documentation uses version 6000.2.13f1).
+2. Project Creation
+* Navigate to the Projects tab and click on New project.
+* In the left sidebar, select Core.
+* Choose the Universal 2D template.
+* Under Project Settings on the right side:
+   * Set the Project name (e.g., "My project").
+   * Select your organization from the dropdown menu.
+* Click Create project.
+* Accept Terms: A "Unity Editor Software Terms" window will appear. Tick the box for "I have read and agree to the Unity Editor Software Terms" and click Accept and Continue.
+3. Setting up the Scene
+* Configure Camera: In the Hierarchy window (left side), click on Main Camera.
+* Positioning: On the screen, select the drag symbol (Move Tool) and place the camera as needed within the scene.
+4. Adding a 2D Object
+* Go to the top menu and select GameObject > 2D Object > Sprites > Triangle.
+* Place the triangle sprite anywhere within the scene view.
+5. Creating the C# Script
+* In the top menu, go to Assets > Create > Scripting > MonoBehaviour Script.
+* Name the script (the documentation uses names like prac1 or AllExamples).
+* Open Script: Double-click the script file in the Project window to open it in Visual Studio Code.
+________________
+
+
+C# Code Implementations
+Example 1: While Loop to Print Numbers
+This script prints a sequence of numbers to the console.
+C#
+using UnityEngine;
+
+
+public class Example1 : MonoBehaviour
+{
+    void Start()
+    {
+        Debug.Log("While loop output:");
+        int count = 0;
+        while (count < 4)
+        {
+            Debug.Log("Output: " + count);
+            count++;
+        }
+    }
+}
+
+
+Example 2: Conditional Statement (Odd or Not)
+This logic checks if a specific integer is odd using the modulus operator: num (mod 2) not equal to 0.
+C#
+using UnityEngine;
+
+
+public class Example2 : MonoBehaviour
+{
+    void Start()
+    {
+        int num = 27;
+        if (num % 2 != 0)
+        {
+            Debug.Log(num + " is an Odd number");
+        }
+        else
+        {
+            Debug.Log(num + " is not an Odd number");
+        }
+    }
+}
+
+
+Combined Script: All Practical Examples
+You can combine all tasks into a single script to view multiple outputs at once.
+C#
+using UnityEngine;
+
+
+public class AllExamples : MonoBehaviour
+{
+    void Start()
+    {
+        // 1. While loop print numbers
+        Debug.Log("While loop output:");
+        int count = 0;
+        while (count < 4)
+        {
+            Debug.Log("Output: " + count);
+            count++;
+        }
+
+
+        // 2. Check if a number is odd
+        int num = 27;
+        if (num % 2 != 0)
+        {
+            Debug.Log(num + " is an Odd number");
+        }
+        else
+        {
+            Debug.Log(num + " is not an Odd number");
+        }
+
+
+        // 3. Switch case for Grade System
+        char grade = 'C';
+        switch (grade)
+        {
+            case 'A':
+                Debug.Log("Excellent!");
+                break;
+            case 'B':
+                Debug.Log("Good job!");
+                break;
+            case 'C':
+                Debug.Log("Fair.");
+                break;
+            case 'D':
+                Debug.Log("Needs improvement.");
+                break;
+            case 'F':
+                Debug.Log("Failed.");
+                break;
+            default:
+                Debug.Log("Invalid grade.");
+                break;
+        }
+
+
+        // 4. For loop: Sum of first n numbers
+        int n = 10;
+        int sum1 = 0;
+        for (int i = 1; i <= n; i++)
+        {
+            sum1 += i;
+        }
+        Debug.Log("Sum of first " + n + " numbers = " + sum1);
+
+
+        // 5. While loop: Sum of even numbers in a range
+        int start = 1;
+        int end = 20;
+        int sum2 = 0;
+        int number = start;
+        while (number <= end)
+        {
+            if (number % 2 == 0)
+            {
+                sum2 += number;
+            }
+            number++;
+        }
+        Debug.Log("Sum of even numbers from " + start + " to " + end + " = " + sum2);
+    }
+}
+
+
+________________
+
+
+6. Execution and Output
+* Attach Script: Return to the Unity Hub/Editor. Select the Triangle object in the Hierarchy.
+* In the Inspector window (right side), click Add Component > Scripts and select your script (e.g., Prac1).
+* Run: Click the Play button at the top of the editor.
+* View Output: Open the Console tab at the bottom to see the printed results.
+________________
+
+
+Description of Output Images
+1. Unity Hub Project Screen: A dark-themed interface showing the "New project" setup. "Universal 2D" is highlighted in the center, and project settings (Name, Location, Organization) are visible on the right.
+2. Unity Editor Interface: The main workspace showing the Hierarchy on the left with SampleScene, Main Camera, and Global Light 2D. The center Scene view shows a 2D grid with a camera icon. The bottom area contains the Project and Console tabs.
+3. Visual Studio Code (Editor): A code editor window showing the file prac1.cs. The code is displayed with line numbers, featuring the using UnityEngine; directive and the void Start() method containing the while loop logic.
+4. Inspector Component View: A screenshot of the Inspector window showing the Example 1 (Script) component attached to an object. It includes a checkbox, the script name prac, and an "Add Component" button.
+5. Console Output (While Loop): The Console window displays multiple lines of text. It shows "While loop output:" followed by four separate lines: "Output: 0", "Output: 1", "Output: 2", and "Output: 3", each with a timestamp.
+6. Game View (Triangle Object): The center display shows a blue background with a single, solid white triangle sprite positioned in the middle.
+7. Console Output (Combined): The Console shows various logs including:
+   * "27 is an Odd number".
+   * "Sum of first 10 numbers = 55".
+   * "Sum of even numbers from 1 to 20 = 110".

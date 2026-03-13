@@ -1,0 +1,87 @@
+﻿Practical 9B
+Aim
+To open a 3D project in Unity and implement character animations (breathing, walking, and running) using an Animation Controller and a C# script for keyboard input.
+________________
+
+
+Documentation
+Step 1: Project Setup
+* Open the existing 3D Unity project from the previous practical.
+* Ensure the same scene is active with your character (e.g., Mutant Breathing Idle) present in the Hierarchy.
+Step 2: Create Animation Controller
+* Navigate to the Assets panel at the bottom of the editor.
+* Right-click in the Assets area and select Create >> Animation >> Animator Controller.
+* Name the new controller (e.g., "New Anima").
+* Output Description: In the Assets folder, a new icon appears representing the Animator Controller with a blue nodes-and-arrows symbol.
+Step 3: Configure Animator States
+* Double-click the new Animator Controller to open the Animator window.
+* Locate your animation clips (breathing, running, walking) in the Assets folder.
+* Drag and drop the breathing animation clip into the Animator window. This will automatically become the default state (orange color).
+* Drag and drop the running and walking animation clips into the Animator window.
+* Output Description: The Animator grid now shows four blocks: a green "Entry" block pointing to an orange "breathing" block, and two grey blocks labeled "running" and "walking".
+Step 4: Create State Transitions
+* Right-click the breathing block, select Make Transition, and click on the running block.
+* Right-click the running block, select Make Transition, and click back on the breathing block.
+* Repeat these steps to create bidirectional transitions between breathing and walking.
+* Output Description: White arrows now connect the breathing state to both running and walking, indicating the paths the animation can take.
+Step 5: Define Animation Parameters
+* In the Animator window, click the Parameters tab next to Layers.
+* Click the + icon and select Bool from the dropdown menu.
+* Create a boolean named Walk.
+* Click the + icon again and create a second boolean named Running.
+* Output Description: The Parameters list now displays two boolean variables, "Walk" and "Running," each with a checkbox beside it.
+Step 6: Set Transition Conditions
+* Click on the transition arrow pointing from breathing to walking.
+* In the Inspector panel, uncheck Has Exit Time.
+* Under the Conditions section, click the + button.
+* Set the condition to Walk and the value to true.
+* Click the transition arrow from walking to breathing. Uncheck Has Exit Time and add a condition where Walk is false.
+* Repeat this for the running transitions:
+   * Breathing to Running: Uncheck Has Exit Time, Condition: Running is true.
+   * Running to Breathing: Uncheck Has Exit Time, Condition: Running is false.
+Step 7: Write and Bind the Script
+* Right-click in the Assets folder (or a Scenes subfolder) and select Create >> MonoBehaviour Script.
+* Name the script Animation_Script.
+* Enter the following code into the script:
+C#
+using UnityEngine;
+
+
+public class Animation_Script : MonoBehaviour
+{
+    public Animator myanim; // Reference to the Animator component
+    bool iswalking = false;
+    bool isrunning = false;
+
+
+    void Start()
+    {
+        // Initialize the Animator component
+        [cite_start]myanim = GetComponent<Animator>(); [cite: 532]
+    }
+
+
+    void Update()
+    {
+        // Check for "W" key for walking
+        [cite_start]iswalking = Input.GetKey(KeyCode.W); [cite: 537]
+        [cite_start]myanim.SetBool("Walk", iswalking); [cite: 538]
+
+
+        // Check for "D" key for running
+        [cite_start]isrunning = Input.GetKey(KeyCode.D); [cite: 539]
+        [cite_start]myanim.SetBool("Running", isrunning); [cite: 540]
+    }
+}
+
+
+* Note: Ensure the strings "Walk" and "Running" in the script exactly match the parameter names created in the Animator.
+* Select the character (e.g., "Mutant Bre") in the Hierarchy.
+* Drag the Animation_Script from the Assets folder onto the character in the Hierarchy or click Add Component in the Inspector to attach it.
+* In the character's Animator component, drag your new Animator Controller into the Controller slot.
+Step 8: Final Output
+* Press the Play button at the top of the Unity editor.
+* When you press the W key, the character should transition to the walking animation.
+* When you press the D key, the character should transition to the running animation.
+* When no keys are pressed, the character returns to the breathing idle state.
+* Output Description: The Game view shows the character in a wide, low-angle perspective against a simple horizon. Depending on the key pressed, the character model will perform a walking or running motion.

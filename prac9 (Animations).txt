@@ -1,0 +1,85 @@
+﻿Practical 9
+Aim: Animations
+________________
+
+
+Step 1: Obtain 3D Assets and Animations from Mixamo
+1. Search for Mixamo: Open a web browser and go to https://www.google.com/search?q=google.com. Search for "mixamo".
+2. Access Mixamo: Click on the official link: https://www.mixamo.com.
+3. Sign In/Sign Up: Sign up for free or log in to your Adobe account.
+4. Select a Character:
+   * Click on the Characters tab.
+   * Browse and select any one character from the gallery (e.g., Louise, Romero, or Amy).
+   * Output Description: The screen shows a grid of various 3D character models such as "Warrok W Kurniawan", "Peasant Girl", "Romero", and "Louise".
+   * Click "USE THIS CHARACTER" on the confirmation popup.
+5. Find and Download Animations:
+   * Walking Animation:
+      * Go to the Animations tab.
+      * Search for "walking".
+      * Select a walking animation.
+      * Click Download.
+      * Settings: Set Format to FBX Binary (.fbx), Skin to Without Skin, and Frames per Second to 30.
+   * Breathing Animation:
+      * Search for "breathing".
+      * Select "Mutant Breathing Idle".
+      * Click Download.
+      * Settings: Set Format to FBX Binary (.fbx), Skin to With Skin, and Frames per Second to 30.
+   * Running Animation:
+      * Search for "running".
+      * Select a running animation.
+      * Click Download.
+      * Settings: Set Format to FBX Binary (.fbx), Skin to Without Skin, and Frames per Second to 30.
+Step 2: Import Assets into Unity
+1. Locate Files: Go to your Downloads folder to find Walking.fbx, Mutant Breathing Idle.fbx, and Running.fbx.
+2. Import to Project: Copy these three files and paste them into your Unity project's Assets folder.
+3. Output Description: A file explorer window shows the three .fbx files in the Downloads folder, which are then moved to This PC > Local Disk (C:) > Users > Project(3D) > Assets.
+Step 3: Setup the Character in the Scene
+1. Add Character: Drag and drop the breathing character from the Assets folder directly into the Scene.
+2. Adjust Scale: Select the character in the scene and use the Scale Tool to extend/resize it as needed.
+3. Output Description: The Unity Scene view displays the character model with the scale gizmo (red, green, and blue handles) active for resizing.
+Step 4: Extract Textures and Materials
+1. Select Asset: Click on the breathing character file in the Assets folder.
+2. Extract Textures:
+   * In the Inspector panel on the right, click on the Materials tab.
+   * Click the Extract Textures... button.
+   * In the file dialog, click Select Folder (by default, it opens the project folder).
+   * If a NormalMap settings window pops up, click Ignore.
+3. Extract Materials:
+   * In the same Materials tab, click the Extract Materials... button.
+   * Click Select Folder.
+   * Output Description: The project folder now populates with various texture maps (colorful and greyscale images) and a material ball named "Ch46_b...".
+Step 5: Configure Animation Clips
+1. Create Animation Folder: Right-click in the Assets area and create a new folder named "animations".
+2. Create Animator Controller:
+   * Right-click inside the animations folder.
+   * Go to Create > Animator Controller.
+   * Name it "New Animator".
+3. Prepare Clips:
+   * Go to the Assets folder and click the arrow on the breathing character asset to expand it.
+   * Select the animation clip (the triangle icon).
+   * In the Inspector, click Edit....
+   * Scroll down and rename the clip to "breathing".
+   * Tick the Loop Time checkbox.
+   * Click anywhere outside the box, and when the "Unsaved Changes Detected" popup appears, click Save.
+   * Repeat these steps for the running and walking files, naming their clips "running" and "walking" respectively and enabling Loop Time for each.
+Step 6: Setup Animator States and Transitions
+1. Add States: Drag and drop the running, walking, and breathing animation clips (the triangle icons) into the Animator window.
+2. Create Transitions:
+   * Right-click the running state and select Make Transition, then click on the breathing state.
+   * Right-click the breathing state, select Make Transition, and click on the walking state.
+   * Right-click the walking state, select Make Transition, and click on the running state.
+3. Adjust Transition Timing:
+   * Click on the arrow connecting running to breathing.
+   * In the Inspector panel, expand the Settings.
+   * Set Exit Time to 2.
+   * Repeat this for all other transition arrows in the graph.
+4. Output Description: The Animator window shows a flow chart starting from a green Entry node to an orange running state, with white arrows forming a continuous loop between running, breathing, and walking states.
+Step 7: Apply Animator to the Character
+1. Select Character: In the Hierarchy panel, select the Mutant Breathing Idle object.
+2. Add Animator Component:
+   * Click Add Component in the Inspector.
+   * Search for and select Animator.
+3. Assign Controller: Drag your "New Animator" controller from the animations folder and drop it into the Controller slot of the Animator component on your character.
+Step 8: Final Execution
+1. Click the Play button at the top of the Unity Editor.
+2. Output Description: In the Game view, the character model begins performing the animations in the specified sequence: first running, then transitioning to breathing, and finally walking before looping back to running.

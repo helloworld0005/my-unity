@@ -1,0 +1,144 @@
+﻿PRACTICAL 6
+Aim: Scene Management
+The goal of this practical is to implement various scene management techniques in Unity, including basic scene loading, asynchronous loading, additive scene loading, and unloading scenes using the UnityEngine.SceneManagement API.
+________________
+
+
+1. Basic Scene Loading
+Step-by-Step Instructions:
+1. Create and Save Scene: Create a new scene in Unity and save it with the name prac6.
+2. Setup Hierarchy: Ensure your hierarchy contains a Main Camera, a Canvas (generated when adding UI), and an EventSystem.
+3. Add UI Button: Go to GameObject >> UI >> Button - TextMeshPro to add a button to your canvas.
+4. Configure Button Text:
+   * Select the Text (TMP) object inside the Button.
+   * In the Inspector, under Text Input, type "Start Game".
+   * Adjust the Font Size (e.g., set to 2 or as required for visibility).
+5. Position Button: In the Scene View, position the button beside the camera and expand its size so it is clearly visible in the Game view.
+6. Create Script: Create a new C# script named prac6_1.
+7. Attach Script: Select the Button in the Hierarchy, click Add Component in the Inspector, search for your script prac6_1, and attach it.
+8. Configure Build Settings:
+   * Go to File >> Build Profiles (or Build Settings).
+   * Click Add Open Scenes to include "Scenes/SampleScene" and "Scenes/prac6" in the build list.
+Code Implementation:
+C#
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+
+public class prac6_1 : MonoBehaviour
+{
+    public void LoadScene()
+    {
+        // Give your scene name like prac6
+        SceneManager.LoadScene("prac6");
+    }
+
+
+    void Start()
+    {
+        // Start is called once before the first execution of Update
+    }
+
+
+    void Update()
+    {
+        // Update is called once per frame
+    }
+}
+
+
+Finalizing the Click Event:
+* Select the Button object.
+* In the Inspector, locate the On Click () section and click the + icon.
+* Drag the Button object itself into the object slot.
+* From the function dropdown, select prac6_1 >> LoadScene().
+Output Description: In the Game view, a large white button with the text "Start Game" appears centered over a blue background. When clicked, the prac6 scene is loaded. In the Hierarchy, you will see the active scene change, and a "DontDestroyOnLoad" section may appear if objects are marked to persist.
+________________
+
+
+2. Asynchronous Scene Loading (Complex Scene)
+Step-by-Step Instructions:
+1. Maintain Setup: Use the same UI setup as the basic loading practical.
+2. Modify Script: Update the prac6_1 script to include a coroutine for asynchronous loading. This is useful for displaying loading bars or progress.
+3. Update Button Event: Change the On Click () function of the button to trigger LoadSceneAsyncButton().
+Code Implementation:
+C#
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
+
+
+public class prac6_1 : MonoBehaviour
+{
+    public void LoadSceneAsyncButton()
+    {
+        StartCoroutine(LoadAsync());
+    }
+
+
+    IEnumerator LoadAsync()
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync("prac6");
+        
+        while (!operation.isDone)
+        {
+            // Debugging progress (0% to 100%) - can be used for loading bars
+            Debug.Log(operation.progress * 100 + "%"); 
+            yield return null;
+        }
+    }
+}
+
+
+Output Description: Upon clicking the button, the scene loads in the background. The Unity Console will display the loading progress as a series of logs, starting from "0%" and jumping to "90%" or higher as the data processes, before successfully switching to the new scene.
+________________
+
+
+3. Additive Scene Loading
+Step-by-Step Instructions:
+1. Maintain Setup: Use the existing button and hierarchy.
+2. Modify Script: Add a method that uses LoadSceneMode.Additive.
+3. Update Button Event: Link the button's On Click () event to the new LoadSceneAdd() function.
+Code Implementation:
+C#
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+
+public class prac6_1 : MonoBehaviour
+{
+    public void LoadSceneAdd()
+    {
+        // Loads the scene without closing the current one
+        SceneManager.LoadScene("prac6", LoadSceneMode.Additive);
+    }
+}
+
+
+Output Description: Unlike standard loading, clicking the button adds the new scene to the Hierarchy while keeping the current one active. If you click the button multiple times, you will see multiple instances of "prac6" appear in the Hierarchy simultaneously. The visual output remains the same, but the underlying scene structure becomes a composite of multiple scenes.
+________________
+
+
+4. Unload Scene
+Step-by-Step Instructions:
+1. Modify Script: Add a method to unload a specific scene asynchronously.
+2. Handle Limitations: Note that Unity does not allow you to unload the only active scene. To test this properly, you should have a "MainScene" loaded first.
+3. Update Button Event: Link the button's On Click () event to UnloadScene().
+Code Implementation:
+C#
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+
+public class prac6_1 : MonoBehaviour
+{
+    public void UnloadScene()
+    {
+        // Recommended approach: Load a new scene, then unload the old one
+        SceneManager.LoadScene("MainScene");
+        SceneManager.UnloadSceneAsync("prac6");
+    }
+}
+
+
+Output Description: If you attempt to unload the only active scene, the Console will show an error: "Unloading the last loaded scene... is not supported". When used correctly with multiple scenes, the specified scene ("prac6") will disappear from the Hierarchy, and the objects belonging to that scene will be removed from the Game view.

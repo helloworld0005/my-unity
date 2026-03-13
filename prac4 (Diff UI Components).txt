@@ -1,0 +1,231 @@
+﻿Practical 4
+Aim: Implement Different types of UI components in Unity.
+________________
+
+
+Step-by-Step Documentation
+1. Open Project: Open your existing project in the Unity Editor.
+2. Create Canvas:
+   * In the left sidebar (Hierarchy), right-click.
+   * Navigate to UI >> Canvas.
+   * Output Description: The Unity Hierarchy now shows a "Canvas" object and an "EventSystem" object. A large rectangular boundary representing the Canvas area appears in the Scene view.
+________________
+
+
+1. Button (Legacy)
+1. Create Button:
+   * Right-click on the Canvas in the Hierarchy.
+   * Select UI >> Legacy >> Button.
+2. Configure Properties:
+   * Select the Button and view the Inspector.
+   * Expand the Text component of the Button.
+   * Change the Text field to "Click Button".
+   * Set Font Size to 14.
+3. Create Script:
+   * Create a new C# script named LegacyButtonClick.cs.
+Code (Button.cs):
+C#
+using UnityEngine;
+
+
+public class LegacyButtonClick : MonoBehaviour
+{
+    public void OnButtonClick()
+    {
+        Debug.Log("Legacy Button Clicked");
+    }
+}
+
+
+4. Bind Script to Button:
+   * Select the Button in the Hierarchy.
+   * Click Add Component and add the LegacyButtonClick script.
+   * In the On Click () section of the Button component, click the + sign.
+   * Drag the Button object from the Hierarchy into the None (Object) slot.
+   * In the No Function dropdown, select LegacyButtonClick >> OnButtonClick().
+5. Output Description:
+   * Game View: A white button with the text "Click Button" is visible.
+   * Console: When the button is clicked during Play mode, the message "[10:56:24] Legacy Button Clicked" appears in the console.
+________________
+
+
+2. Image
+1. Import Asset:
+   * Download a .jpg image to your computer.
+   * Go to Assets >> Import New Asset....
+   * Select your image file and click Import.
+2. Configure Sprite:
+   * Select the imported image in the Assets folder.
+   * In the Inspector, change Texture Type to Sprite (2D and UI).
+   * Set Sprite Mode to Single.
+   * Click Apply at the bottom of the Inspector.
+3. Create UI Image:
+   * Right-click in the Hierarchy >> UI >> Image.
+4. Assign Sprite:
+   * Select the Image object.
+   * Drag your imported image from the Assets folder into the Source Image slot in the Inspector.
+5. Create Script: Create a script named ImageClick.cs.
+Code (Image.cs):
+C#
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+
+public class ImageClick : MonoBehaviour, IPointerClickHandler
+{
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log("Image Clicked!");
+    }
+}
+
+
+6. Output Description:
+   * Scene/Game View: The imported image appears on the Canvas.
+   * Console: Clicking the image in Play mode triggers the log "[10:57:57] Image Clicked!".
+________________
+
+
+3. Toggle
+1. Create Toggle: Right-click in Hierarchy >> UI >> Toggle.
+2. Edit Label:
+   * Expand the Toggle object and click on the Label child.
+   * In the Inspector, change the Text to "ON/OFF".
+3. Scripting & Binding:
+   * Add a script with a ToggleValue(bool) function.
+   * In the Toggle's On Value Changed (Boolean) section, click + and drag the Toggle object into the slot.
+   * Select the dynamic ToggleValue function from your script.
+4. Output Description:
+   * Game View: A checkbox with the label "ON/OFF".
+   * Console: Switching the toggle prints "[11:09:04] Toggle OFF" or "[11:09:05] Toggle ON".
+________________
+
+
+4. Slider
+1. Create Slider: Right-click in Hierarchy >> UI >> Slider.
+2. Configure Slider:
+   * In the Inspector, set Min Value to 0, Max Value to 100, and Value to 50.
+3. Create Script:
+Code (slider.cs):
+C#
+using UnityEngine;
+
+
+public class slider : MonoBehaviour
+{
+    public void SliderValue(float value)
+    {
+        Debug.Log("Slider Value: " + value);
+    }
+}
+
+
+4. Binding: Add the script to the Slider. In On Value Changed (Single), add a listener and select slider.SliderValue.
+5. Output Description:
+   * Game View: A horizontal bar with a draggable handle.
+   * Console: Moving the slider prints the current numeric value, e.g., "[11:23:41] Slider Value: 55".
+________________
+
+
+5. Input Field (Legacy)
+1. Create Input Field: Right-click in Hierarchy >> UI >> Legacy >> Input Field.
+2. Create Script:
+Code (LegacyInputScript.cs):
+C#
+using UnityEngine;
+using UnityEngine.UI;
+
+
+public class LegacyInputScript : MonoBehaviour
+{
+    public void ReadInput(string value)
+    {
+        Debug.Log("Input Text: " + value);
+    }
+}
+
+
+3. Output Description:
+   * Game View: An input box with placeholder text "Enter text...".
+   * Console: Typing in the box logs the changes, e.g., "[10:19:04] Input changed: Demon Sl".
+________________
+
+
+6. Dropdown (Legacy)
+1. Create Dropdown: Right-click in Hierarchy >> UI >> Legacy >> Dropdown.
+2. Set Options: In the Inspector, under the Options list, edit the entries to Option A, Option B, and Option C.
+3. Create Script:
+Code (dropdown.cs):
+C#
+using UnityEngine;
+using UnityEngine.UI;
+
+
+public class dropdown : MonoBehaviour
+{
+    Dropdown dropdown1;
+
+
+    void Start()
+    {
+        dropdown1 = GetComponent<Dropdown>();
+        if (dropdown1 != null)
+        {
+            dropdown1.onValueChanged.AddListener(UserValueChanged);
+        }
+        else
+        {
+            Debug.LogError("Dropdown component not found!");
+        }
+    }
+
+
+    public void UserValueChanged(int index)
+    {
+        string selectedoption = dropdown1.options[index].text;
+        Debug.Log("Dropdown value changed: " + selectedoption);
+    }
+}
+
+
+4. Output Description:
+   * Game View: A dropdown menu that expands to show Options A, B, and C when clicked.
+   * Console: Selecting an option logs "[10:08:32] Dropdown value changed: Option B".
+________________
+
+
+7. TextMesh Pro
+1. Create TMP Text: Right-click in Hierarchy >> UI >> Text - TextMeshPro.
+2. Import Essentials: A "TMP Importer" window will appear; click Import TMP Essentials.
+3. Create Script:
+Code (textmeshpro.cs):
+C#
+using UnityEngine;
+using TMPro;
+
+
+public class textmeshpro : MonoBehaviour
+{
+    public TextMeshProUGUI output;
+
+
+    public void HandleInput(int val)
+    {
+        if(val == 0)
+        {
+            output.text = "One Piece";
+        }
+        if(val == 1)
+        {
+            output.text = "Demon Slayer";
+        }
+        if(val == 2)
+        {
+            output.text = "Bleach";
+        }
+    }
+}
+
+
+4. Output Description:
+   * Game View: High-quality text rendered on the screen. Depending on the input received by the script, the text changes to "One Piece", "Demon Slayer", or "Bleach".

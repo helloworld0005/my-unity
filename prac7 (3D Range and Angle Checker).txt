@@ -1,0 +1,100 @@
+﻿Practical 7: Unity 3D Range and Angle Checker
+Aim
+To open Unity Hub, create a 3D project, and implement scripts to check the distance and angle between two 3D objects (Player and Target).
+________________
+
+
+Part 1: Range Checker
+This section focuses on detecting when a target object enters or exits a specified range relative to the player.
+Step 1: Project Setup
+1. Open Unity Hub (Version 3.11.1 or similar).
+2. Click on the New project button.
+3. In the templates gallery, select Universal 3D.
+4. Under Project Settings, name your project (e.g., "My project") and choose a save location.
+5. Click Create project.
+Output Image Description: The Unity Hub "New project" window is visible, with the "Universal 3D" template highlighted in the center and the "Create project" button active in the bottom right corner.
+Step 2: Creating 3D Objects
+1. Go to the top menu and select GameObject > 3D Object > Cube. This cube will act as the Player.
+2. Go to GameObject > 3D Object > Sphere. This sphere will act as the Target.
+Output Image Description: The Unity Editor Scene view shows a 3D environment with a gray cube and a gray sphere placed near each other on a grid.
+Step 3: Creating the Range Checker Script
+1. In the Project window, right-click and select Assets > Create > MonoBehaviour Script.
+2. Name the script prac7_1.
+3. Open the script and enter the following code:
+C#
+using UnityEngine;
+
+
+public class prac7_1 : MonoBehaviour
+{
+    [SerializeField] Transform target;
+    [SerializeField] float range = 5;
+    private bool targetWasInRange = false;
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        var distance = (target.position - transform.position).magnitude;
+
+
+        if (distance <= range && targetWasInRange == false) 
+        {
+            Debug.LogFormat("Target {0} entered range!", target.name);
+            targetWasInRange = true;
+        }
+        else if (distance > range && targetWasInRange == true) 
+        {
+            Debug.LogFormat("Target {0} exited range!", target.name);
+            targetWasInRange = false;
+        }
+    }
+}
+
+
+Step 4: Binding the Script
+1. Select the Cube (Player) in the Hierarchy.
+2. In the Inspector window, click Add Component and search for your script prac7_1.
+3. Drag the Sphere object from the Hierarchy and drop it into the Target field of the script component in the Inspector.
+4. Set the Range value to 5.
+Step 5: Testing the Range Checker
+1. Click the Play button at the top of the editor.
+2. While the game is running, switch to the Scene tab.
+3. Select the Sphere and use the Move Tool (arrow icon) to drag it toward and away from the Cube.
+Output Image Description: > * Target In Range: The Console window displays the message: [10:40:21] Target Sphere entered range!. * Target Out of Range: The Console window displays the message: [10:40:26] Target Sphere exited range!.
+________________
+
+
+Part 2: Angle Checker
+This section calculates the mathematical angle between the player's forward direction and the target object.
+Step 1: Creating the Angle Checker Script
+1. Create a new script in the Assets folder named prac7_2.
+2. Enter the following code:
+C#
+using UnityEngine;
+
+
+public class prac7_2 : MonoBehaviour
+{
+    [SerializeField] Transform target;
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        var directionToTarget = (target.position - transform.position).normalized;
+        var dotProduct = Vector3.Dot(transform.forward, directionToTarget);
+        var angle = Mathf.Acos(dotProduct);
+
+
+        Debug.LogFormat("The angle between my forward direction and {0} is {1:f1}degree", 
+            target.name, angle * Mathf.Rad2Deg);
+    }
+}
+
+
+Step 2: Binding and Testing
+1. Attach the prac7_2 script to the Cube (Player).
+2. Assign the Sphere as the Target in the Inspector.
+3. Run the game and move the sphere around the cube in the Scene view.
+Output Image Description: > * Wide Angle: When the sphere is moved behind the cube, the Console shows: The angle between my forward direction and Sphere is 173.0degree. * Narrow Angle: When the sphere is moved directly in front of the cube, the Console shows: The angle between my forward direction and Sphere is 4.9degree.

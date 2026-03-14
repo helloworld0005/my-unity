@@ -1,0 +1,184 @@
+﻿Practical 3
+Aim: Implement Physical characteristic (jump on an object and A. Only Jump, also bind with a surface effector).
+________________
+
+
+Step 1: Create a New Scene
+* Open Unity and create a new project.
+* Go to File > New Scene (or press Ctrl+N).
+* Select the Basic 2D (Built-in) template from the "Scene Templates in Project" window.
+* Click the Create button.
+Step 2: Add Game Objects
+* Create a triangle sprite for the player:
+   * Navigate to GameObject > 2D Object > Sprites > Triangle.
+* Create a platform for the surface effector:
+   * Navigate to GameObject > 2D Object > Sprites > Square.
+   * Select the Rect Tool from the toolbar.
+   * Stretch the square horizontally to create a long platform.
+Step 3: Implementation of Part A - Only Jump
+* Create Script:
+   * Right-click in the project panel.
+   * Select Create > Scripting > MonoBehaviour Script.
+   * Name the script prac3a.
+Code for prac3a:
+C#
+using UnityEngine;
+
+
+public class prac3a : MonoBehaviour
+{
+    public float speed = 5f;
+    public float jumpForce = 5f;
+
+
+    private Rigidbody2D rb2d;
+
+
+    void Start()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+    }
+
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, jumpForce);
+        }
+    }
+}
+
+
+
+
+Code of Audio:
+
+
+using UnityEngine;
+
+
+public class audio : MonoBehaviour
+{
+    public AudioSource jumpSound;
+
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) // Jump button
+        {
+            jumpSound.Play();
+        }
+    }
+}
+
+
+* Attach Components to Triangle:
+   * Select the Triangle object.
+   * Go to Component > Physics 2D > Rigidbody 2D.
+   * In the Inspector, set the Gravity Scale to 1 (or 0 initially to test as per documentation notes).
+   * Drag the prac3a script onto the Triangle.
+   * Set the Jump Force value to 5 in the Inspector (do not keep it less).
+Step 4: Implementation of Part B - Jump + Move
+* Create Script:
+   * Create a new script named prac3b.
+Code for prac3b:
+C#
+using UnityEngine;
+
+
+public class prac3b : MonoBehaviour
+{
+    public float speed = 5f;
+    private Rigidbody2D rb;
+
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+
+    void Update()
+    {
+        float moveInput = Input.GetAxisRaw("Horizontal");
+        rb.linearVelocity = new Vector2(moveInput * speed, rb.linearVelocity.y);
+    }
+}
+* Attach Component:
+   * Attach the prac3b script to the Triangle.
+   * Ensure both prac3a and prac3b scripts are active on the object.
+   * Set the Speed value to 5.
+Step 5: Implementation of Part C - Jump + Move + Color Changing
+* Create Script:
+   * Create a new script named prac3c.
+Code for prac3c:
+C#
+using UnityEngine;
+
+
+public class prac3c : MonoBehaviour
+{
+    public float speed = 5f;
+    public float jumpForce = 5f;
+    public Color leftColor = Color.red;
+    public Color rightColor = Color.blue;
+    public Color idleColor = Color.white;
+    private Rigidbody2D rb;
+    private SpriteRenderer sr;
+
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
+    }
+
+
+    void Update()
+    {
+        float moveX = Input.GetAxis("Horizontal");
+        rb.linearVelocity = new Vector2(moveX * speed, rb.linearVelocity.y);
+
+
+        if (moveX > 0)
+        {
+            sr.color = rightColor;
+        }
+        else if (moveX < 0)
+        {
+            sr.color = leftColor;
+        }
+        else
+        {
+            sr.color = idleColor;
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        }
+    }
+}
+* Attach Component:
+   * Attach prac3c to the Triangle.
+   * Assign colors by clicking the color boxes in the Inspector: Left Color (Red), Right Color (Blue), and Idle Color (White).
+Step 6: Implementation of Part D - Surface Effector
+* Prepare the Triangle:
+   * Ensure the Triangle has a Rigidbody 2D and a Box Collider 2D.
+* Prepare the Platform (Stretched Square):
+   * Select the stretched square platform.
+   * Add a Box Collider 2D: Component > Physics 2D > Box Collider 2D.
+   * Add a Surface Effector 2D: Component > Physics 2D > Surface Effector 2D.
+   * Note: In the Box Collider 2D settings for the platform, ensure "Used By Effector" is checked (standard requirement for effectors).
+________________
+
+
+Output Descriptions
+* Scene Setup: The Unity editor shows a grid-based 2D scene. A small white triangle is positioned in the center, and a long horizontal white rectangular platform is placed at the bottom.
+* Jump Mechanics: When the Space key is pressed, the triangle jumps upward. If released, it falls back down due to gravity.
+* Movement and Color Change:
+   * Left Movement: When pressing Space + A, the triangle moves left and its color changes to Pink/Red.
+   * Right Movement: When pressing Space + D, the triangle moves right and its color changes to Blue (or stays white/light depending on idle settings).
+* Final Scene View: The game view shows a dark blue background with the white horizontal platform and the triangle sprite interacting with the physics of the scene.
